@@ -1,0 +1,37 @@
+import numpy as np
+from config import Config
+from dataset import MidiDataset
+from model import get_model
+
+
+def concat_datasets(folders):
+    x_list = []
+    y_list = []
+    for folder in folders:
+        print("\rProcessing folder: {}".format(folder))
+        x, y = MidiDataset(folder).get_data()
+        x_list.append(x)
+        y_list.append(y)
+
+    return np.concatenate(x_list, axis=0), np.concatenate(y_list, axis=0)
+
+
+def main():
+    print("Generating train dataset")
+    x_train, y_train = concat_datasets(Config().TRAIN_FOLDERS)
+    print("Generating test dataset")
+    X_test, y_test = concat_datasets(Config().TEST_FOLDERS)
+
+    model = get_model()
+    batch_size = 128
+    model.fit(x_train, y_train, epochs=100, batch_size=batch_size)
+
+    # Evaluate the model on the test data using `evaluate`
+    print('\n# Evaluate on test data')
+    results = model.evaluate(X_test, y_test, batch_size=batch_size)
+    print('test loss, test acc:', results)
+    print('bla')
+
+
+if __name__ == "__main__":
+    main()

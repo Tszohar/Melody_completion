@@ -1,0 +1,22 @@
+{
+  "TRAIN_FOLDER_OLD": "/home/tsofit/OneDrive/music/midi_files/train",
+  "TRAIN_FOLDERS" : [
+    "/home/tsofit/maestro_dataset/maestro-v2.0.0/2018",
+    "/home/tsofit/maestro_dataset/maestro-v2.0.0/2017",
+    "/home/tsofit/maestro_dataset/maestro-v2.0.0/2015",
+    "/home/tsofit/maestro_dataset/maestro-v2.0.0/2014",
+    "/home/tsofit/maestro_dataset/maestro-v2.0.0/2013",
+    "/home/tsofit/maestro_dataset/maestro-v2.0.0/2011",
+    "/home/tsofit/maestro_dataset/maestro-v2.0.0/2009"
+    ],
+  "TEST_FOLDERS" : [
+    "/home/tsofit/maestro_dataset/maestro-v2.0.0/2008",
+    "/home/tsofit/maestro_dataset/maestro-v2.0.0/2006",
+    "/home/tsofit/maestro_dataset/maestro-v2.0.0/2004"
+    ],
+  "PROCESSED_FOLDER": "processed",
+  "MIDI_CHANNEL": 1,
+  "NUM_NOTES" : 128,
+  "NOTE_RESOLUTION":  16,
+  "LOG_NAME": "music_generator"
+}
