@@ -1,15 +1,18 @@
+import os
+
 import numpy as np
 from config import Config
 from dataset import MidiDataset
 from model import get_model
 
 
-def concat_datasets(folders):
+def concat_datasets(base_folder, folders):
     x_list = []
     y_list = []
     for folder in folders:
-        print("\rProcessing folder: {}".format(folder))
-        x, y = MidiDataset(folder).get_data()
+        folder_ = os.path.join(base_folder, folder)
+        print("\rProcessing folder: {}".format(folder_))
+        x, y = MidiDataset(folder_).get_data()
         x_list.append(x)
         y_list.append(y)
 
@@ -18,9 +21,9 @@ def concat_datasets(folders):
 
 def main(base_folder: str):
     print("Generating train dataset")
-    x_train, y_train = concat_datasets(Config().TRAIN_FOLDERS)
+    x_train, y_train = concat_datasets(base_folder, Config().TRAIN_FOLDERS)
     print("Generating test dataset")
-    X_test, y_test = concat_datasets(Config().TEST_FOLDERS)
+    X_test, y_test = concat_datasets(base_folder, Config().TEST_FOLDERS)
 
     model = get_model()
     batch_size = 128
