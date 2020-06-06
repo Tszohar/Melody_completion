@@ -18,25 +18,22 @@ def get_model():
     # the training of the network.
     :return: Note Predictor model
     """
-    lstm_nodes = 127
-    dropout_rate = 0.3
+    lstm_nodes = 512
+    dropout_rate = 0.0
 
     model = Sequential()
     model.add(LSTM(units=lstm_nodes,
                    recurrent_dropout=dropout_rate,
                    input_shape=(Config().NUM_NOTES - 1, 128),
                    return_sequences=True))
-    # model.add(BatchNormalization())
-    # model.add(Dropout(dropout_rate))
-    # model.add(LSTM(units=lstm_nodes))
-    # model.add(BatchNormalization())
-    model.add(Flatten())
+    model.add(BatchNormalization())
+    model.add(LSTM(units=lstm_nodes))
+    model.add(BatchNormalization())
     model.add(Dense(128))
 
     optimizer = tf.keras.optimizers.RMSprop(learning_rate=1e-3)
 
-    model.compile(optimizer=optimizer, loss='mean_squared_error',
-                  metrics=['accuracy'])
+    model.compile(optimizer=optimizer, loss='mean_squared_error', metrics=['accuracy'])
 
     model.summary()
 
