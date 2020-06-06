@@ -19,21 +19,23 @@ def concat_datasets(base_folder, folders):
     return np.concatenate(x_list, axis=0), np.concatenate(y_list, axis=0)
 
 
-def main(base_folder: str):
+def get_data(base_folder: str):
     print("Generating train dataset")
     x_train, y_train = concat_datasets(base_folder, Config().TRAIN_FOLDERS)
     print("Generating test dataset")
-    X_test, y_test = concat_datasets(base_folder, Config().TEST_FOLDERS)
+    x_test, y_test = concat_datasets(base_folder, Config().TEST_FOLDERS)
 
+    return x_train, y_train, x_test, y_test
+
+
+if __name__ == "__main__":
+    x_train, y_train, x_test, y_test = get_data(base_folder="/home/tsofit/maestro_dataset/maestro-v2.0.0")
     model = get_model()
+
     batch_size = 128
     model.fit(x_train, y_train, epochs=100, batch_size=batch_size)
 
     # Evaluate the model on the test data using `evaluate`
     print('\n# Evaluate on test data')
-    results = model.evaluate(X_test, y_test, batch_size=batch_size)
+    results = model.evaluate(x_test, y_test, batch_size=batch_size)
     print('test loss, test acc:', results)
-
-
-if __name__ == "__main__":
-    main(base_folder="/home/tsofit/maestro_dataset/maestro-v2.0.0")
