@@ -30,6 +30,7 @@ def get_data(base_folder: str):
 
 if __name__ == "__main__":
     x_train, y_train, x_test, y_test = get_data(base_folder="/home/tsofit/maestro_dataset/maestro-v2.0.0")
+
     model = get_model()
 
     batch_size = 1024

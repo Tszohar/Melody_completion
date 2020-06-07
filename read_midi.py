@@ -87,7 +87,7 @@ def extract_track_info(mid: MidiFile) -> pd.DataFrame:
 
     def message_to_dict(msg):
         return {
-            "velocity": msg.velocity,
+            "velocity": msg.velocity / 127,
             "time": msg.time,
             "note": msg.note
         }
