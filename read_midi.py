@@ -64,14 +64,15 @@ def convert_to_matrix(df: pd.DataFrame) -> np.ndarray:
     except:
         midi_array = np.zeros((time_list.max(), 128))
     df = df.groupby(['time_idx', 'note']).last().reset_index()
+    notes_indices = df.note.values
+    velocities = df.velocity.values
+    velocities[velocities > 0] = 1
     for i in range(midi_array.shape[0]):
         if i > 0:
             midi_array[i] = midi_array[i - 1]
-        notes = df[df.time_idx == i]
-        notes_indices = notes.note.values
-        velocities = notes.velocity.values
-
-        midi_array[i, notes_indices] = velocities
+        first_index = np.searchsorted(df.time_idx, i, side='left')
+        last_index = np.searchsorted(df.time_idx, i, side='right')
+        midi_array[i, notes_indices[first_index:last_index]] = velocities[first_index:last_index]
 
     return midi_array
 
@@ -105,11 +106,7 @@ def plot_sheet(midi_array: np.ndarray):
 
 
 def main():
-    midies, targets = read_midi_files(Config().TRAIN_FOLDER)
-    print(midies.shape)
-    print(targets.shape)
-    print(midies)
-    print(targets)
+    read_midi_files('/home/tsofit/OneDrive/music/midi_files/train')
 
 
 if __name__ == '__main__':

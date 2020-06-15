@@ -1,4 +1,5 @@
 {
+  "BASE_FOLDER" : "../maestro_dataset/maestro-v2.0.0",
   "TRAIN_FOLDERS" : ["2018", "2017", "2015", "2014", "2013", "2011", "2009"],
   "TEST_FOLDERS" : ["2008", "2006", "2004"],
   "PROCESSED_FOLDER": "processed",

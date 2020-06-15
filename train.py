@@ -1,5 +1,7 @@
+from datetime import datetime
 import os
 
+import tensorflow as tf
 import numpy as np
 from config import Config
 from dataset import MidiDataset
@@ -29,12 +31,19 @@ def get_data(base_folder: str):
 
 
 if __name__ == "__main__":
-    x_train, y_train, x_test, y_test = get_data(base_folder="/home/tsofit/maestro_dataset/maestro-v2.0.0")
+    x_train, y_train, x_test, y_test = get_data(base_folder=Config().BASE_FOLDER)
 
     model = get_model()
 
-    batch_size = 1024
-    model.fit(x_train, y_train, epochs=100, batch_size=batch_size)
+    batch_size = 128
+    timestamp_str = datetime.strftime(datetime.now(), format="%Y%m%d_%H%M%S")
+    run_path = "./runs/run_{}".format(timestamp_str)
+    my_callbacks = [
+        # tf.keras.callbacks.EarlyStopping(patience=2),
+        tf.keras.callbacks.ModelCheckpoint(filepath=os.path.join(run_path, 'model.{epoch:02d}-{val_loss:.2f}.h5')),
+        tf.keras.callbacks.TensorBoard(log_dir=os.path.join(run_path, 'logs')),
+    ]
+    model.fit(x_train, y_train, epochs=100, validation_split=0.2, batch_size=batch_size, callbacks=my_callbacks)
 
     # Evaluate the model on the test data using `evaluate`
     print('\n# Evaluate on test data')

@@ -53,6 +53,6 @@ class MidiDataset:
 
 
 if __name__ == "__main__":
-    midi = MidiDataset(Config().FOLDER)
-    data = midi.get_data()
+    midi = MidiDataset("/home/tsofit/maestro_dataset/maestro-v2.0.0")
+    data = midi.get_data(base_folder="/home/tsofit/maestro_dataset/maestro-v2.0.0")
     print("bla")

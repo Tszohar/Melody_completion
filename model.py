@@ -29,11 +29,10 @@ def get_model():
     model.add(BatchNormalization())
     model.add(LSTM(units=lstm_nodes))
     model.add(BatchNormalization())
-    model.add(Dense(128))
+    model.add(Dense(128, activation='sigmoid'))
 
     optimizer = tf.keras.optimizers.RMSprop(learning_rate=1e-3)
-
-    model.compile(optimizer=optimizer, loss='mean_squared_error', metrics=['accuracy'])
+    model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
 
     model.summary()
 
