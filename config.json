@@ -1,3 +1,4 @@
+
 {
   "BASE_FOLDER" : "../maestro_dataset/maestro-v2.0.0",
   "TRAIN_FOLDERS" : ["2018", "2017", "2015", "2014", "2013", "2011", "2009"],
@@ -6,5 +7,6 @@
   "MIDI_CHANNEL": 1,
   "NUM_NOTES" : 128,
   "NOTE_RESOLUTION":  16,
-  "LOG_NAME": "music_generator"
+  "LOG_NAME": "music_generator",
+  "BATCH_SIZE": 256
 }

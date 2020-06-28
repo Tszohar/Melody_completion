@@ -1,7 +1,7 @@
 import json
 import tensorflow as tf
 from tensorflow.keras import Sequential
-from tensorflow.keras.layers import LSTM, Dropout, Flatten, Dense, BatchNormalization
+from tensorflow.keras.layers import LSTM, Dropout, Flatten, Dense, BatchNormalization, LayerNormalization
 from sklearn.model_selection import train_test_split
 
 from config import Config
@@ -18,21 +18,22 @@ def get_model():
     # the training of the network.
     :return: Note Predictor model
     """
-    lstm_nodes = 512
+    lstm_nodes = 256
     dropout_rate = 0.0
 
     model = Sequential()
+    model.add(tf.keras.layers.Input((Config().NUM_NOTES - 1, 128)))
     model.add(LSTM(units=lstm_nodes,
                    recurrent_dropout=dropout_rate,
-                   input_shape=(Config().NUM_NOTES - 1, 128),
                    return_sequences=True))
-    model.add(BatchNormalization())
+    model.add(LayerNormalization())
     model.add(LSTM(units=lstm_nodes))
-    model.add(BatchNormalization())
+    model.add(LayerNormalization())
     model.add(Dense(128, activation='sigmoid'))
 
-    optimizer = tf.keras.optimizers.RMSprop(learning_rate=1e-3)
-    model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['accuracy'])
+    # optimizer = tf.keras.optimizers.RMSprop(learning_rate=1e-3)
+    optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
+    model.compile(optimizer=optimizer, loss='binary_crossentropy', metrics=['categorical_accuracy'])
 
     model.summary()
 

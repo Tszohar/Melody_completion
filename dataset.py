@@ -13,8 +13,8 @@ class MidiDataset:
         self._processed_folder = os.path.join(folder, Config().PROCESSED_FOLDER)
         # if not os.path.isdir(self._processed_folder):
         self.preprocess_data_folder(folder=folder)
-        files_data = self.read_pkls(folder=self._processed_folder)
-        self._samples_list, self._data, self._targets = self.split_to_samples(files_data)
+        self._files_data = self.read_pkls(folder=self._processed_folder)
+        # self._samples_list, self._data, self._targets = self.split_to_samples(self._files_data)
 
     @classmethod
     def preprocess_data_folder(cls, folder: str):
@@ -50,6 +50,10 @@ class MidiDataset:
 
     def get_data(self):
         return self._data, self._targets
+
+    @property
+    def files_data(self):
+        return self._files_data
 
 
 if __name__ == "__main__":
