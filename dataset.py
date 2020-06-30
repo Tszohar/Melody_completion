@@ -31,7 +31,8 @@ class MidiDataset:
             with open(os.path.join(folder, file_name), 'rb') as f:
                 files_data.append(pickle.load(f))
 
-        return files_data
+        files_data_cut = [file[:, 28:94] for file in files_data]
+        return files_data_cut
 
     def split_to_samples(self, files_data: List[np.ndarray]):
         sample_indices = []

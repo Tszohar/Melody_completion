@@ -8,5 +8,5 @@
   "NUM_NOTES" : 128,
   "NOTE_RESOLUTION":  16,
   "LOG_NAME": "music_generator",
-  "BATCH_SIZE": 256
+  "BATCH_SIZE": 128
 }

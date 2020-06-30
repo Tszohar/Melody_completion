@@ -4,6 +4,10 @@ import functools
 import os
 
 import tensorflow as tf
+import tensorflow as tf
+# physical_devices = tf.config.list_physical_devices('GPU')
+# tf.config.experimental.set_memory_growth(physical_devices[0], enable=True)
+
 import numpy as np
 from config import Config
 from dataset import MidiDataset
@@ -36,14 +40,14 @@ def concat_datasets(base_folder, folders):
             data_gens.append(data_gen)
             dataset_ = tf.data.Dataset.from_generator(generator=data_gen,
                                                       output_types=(tf.float32, tf.float32),
-                                                      output_shapes=((1, Config().NUM_NOTES-1, 128), (1, 128)))
+                                                      output_shapes=((1, Config().NUM_NOTES-1, 66), (1, 66)))
             datasets.append(dataset_)
             if not dataset:
                 dataset = dataset_
             else:
                 dataset = dataset.concatenate(dataset_)
-
-    dataset = dataset.unbatch().shuffle(buffer_size=10000).batch(Config().BATCH_SIZE, drop_remainder=False)
+    #.shuffle(buffer_size=10000)
+    dataset = dataset.unbatch().batch(Config().BATCH_SIZE, drop_remainder=False)
     # dataset = dataset.prefetch(10)
     return dataset
 
@@ -59,7 +63,7 @@ def get_data(base_folder: str):
 
 if __name__ == "__main__":
     train_dataset, test_dataset = get_data(base_folder=Config().BASE_FOLDER)
-
+    # train_dataset = train_dataset.take(10).repeat(1000)
     model = get_model()
 
     timestamp_str = datetime.strftime(datetime.now(), format="%Y%m%d_%H%M%S")
@@ -68,7 +72,7 @@ if __name__ == "__main__":
         os.makedirs(run_path)
     my_callbacks = [
         # tf.keras.callbacks.EarlyStopping(patience=5),
-        tf.keras.callbacks.ModelCheckpoint(filepath=os.path.join(run_path, 'model.{epoch:02d}.h5')),
+        # tf.keras.callbacks.ModelCheckpoint(filepath=os.path.join(run_path, 'model.{epoch:02d}.h5')),
         # tf.keras.callbacks.TensorBoard(log_dir=os.path.join(run_path, 'logs')),
     ]
     model.fit(train_dataset, epochs=100, validation_data=test_dataset, validation_steps=1000,
