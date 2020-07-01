@@ -106,7 +106,7 @@ def plot_sheet(midi_array: np.ndarray):
 
 
 def main():
-    read_midi_files('/home/tsofit/OneDrive/music/midi_files/train')
+    read_midi_files('../maestro_dataset/demo_midi')
 
 
 if __name__ == '__main__':

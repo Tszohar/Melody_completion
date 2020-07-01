@@ -47,7 +47,7 @@ def concat_datasets(base_folder, folders):
             else:
                 dataset = dataset.concatenate(dataset_)
     #.shuffle(buffer_size=10000)
-    dataset = dataset.unbatch().batch(Config().BATCH_SIZE, drop_remainder=False)
+    dataset = dataset.unbatch().shuffle(buffer_size=10000).take(900000).batch(Config().BATCH_SIZE, drop_remainder=False)
     # dataset = dataset.prefetch(10)
     return dataset
 
@@ -71,11 +71,11 @@ if __name__ == "__main__":
     if not os.path.isdir(run_path):
         os.makedirs(run_path)
     my_callbacks = [
-        # tf.keras.callbacks.EarlyStopping(patience=5),
-        # tf.keras.callbacks.ModelCheckpoint(filepath=os.path.join(run_path, 'model.{epoch:02d}.h5')),
-        # tf.keras.callbacks.TensorBoard(log_dir=os.path.join(run_path, 'logs')),
+        tf.keras.callbacks.EarlyStopping(patience=5),
+        tf.keras.callbacks.ModelCheckpoint(filepath=os.path.join(run_path, 'model.{epoch:02d}.h5')),
+        tf.keras.callbacks.TensorBoard(log_dir=os.path.join(run_path, 'logs')),
     ]
-    model.fit(train_dataset, epochs=100, validation_data=test_dataset, validation_steps=1000,
+    model.fit(train_dataset, epochs=50, validation_data=test_dataset, validation_steps=1000,
               callbacks=my_callbacks)
 
     # Evaluate the model on the test data using `evaluate`
